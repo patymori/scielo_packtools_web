@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-8">
+                <form enctype="multipart/form-data" method="post" action="{% url 'stylechecker:xml-validator' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" value="{{ form.file }}">
+                            <label class="custom-file-label" for="customFile">Selecione o arquivo XML</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-secondary">Validar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $(function () {
+        $("#customFile").change(function () {
+          var filename = $(this).val();
+          var fieldlabel = $(this).next('.custom-file-label');
+          fieldlabel.html(filename.replace("C:\\fakepath\\", ""));
+        });
+    });
+    </script>
+{% endblock %}
