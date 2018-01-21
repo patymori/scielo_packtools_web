@@ -21,18 +21,30 @@
         </div>
         {% if form.is_valid %}
         <div id="result" class="row pt-5">
-            <div class="col-md-2">
-                <nav class="flex-column nav-pills">
-                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
-                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
-                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-                </nav>
-                {{ errors }}
+            <div class="col">
+                <div id="accordion">
+                  {% for items in menu %}
+                      {% for key, value in items.items %}
+                      <div class="card">
+                        <div class="card-header" id="heading{{ forloop.counter }}">
+                          <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                              {{ forloop.counter }} - {{ key }} - {{ value|length }}
+                            </button>
+                          </h5>
+                        </div>
+                        <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}" data-parent="#accordion">
+                          <div class="card-body">
+                              {{ value }}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                  {% endfor %}
+                </div>
             </div>
-            <div class="col-md-10">
-                {{ result }}
-            </div>
+            {{ menu }}
+            {{ result }}
         </div>
         {% endif %}
     </div>

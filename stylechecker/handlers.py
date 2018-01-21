@@ -7,6 +7,25 @@ from packtools.utils import config_xml_catalog
 from packtools import stylechecker
 
 
+def _create_error_menu(xml_validator):
+    summary = stylechecker.summarize(xml_validator)
+    menu = []
+    for item in summary['dtd_errors']:
+        menu.append(item)
+
+    style_errors_menu = {}
+    for key, errors in sorted(summary['style_errors'].items()):
+        for error in errors:
+            if style_errors_menu.get(error['message']):
+                style_errors_menu[error['message']].append(
+                    error['apparent_line']
+                )
+            else:
+                style_errors_menu[error['message']] = [error['apparent_line']]
+    menu.append(style_errors_menu)
+    return menu
+
+
 @config_xml_catalog
 def validate_xml_handler(uploadedFile):
     result_xml_name = os.path.join(
@@ -23,8 +42,7 @@ def validate_xml_handler(uploadedFile):
     if is_valid:
         return is_valid
     else:
-        import pdb; pdb.set_trace()
         with open(result_xml_name, 'w+b') as fb:
             stylechecker.annotate(xml_validator, fb)
-        summary = stylechecker.summarize(xml_validator)
-        return is_valid, summary, result_xml_name
+        menu = _create_error_menu(xml_validator)
+        return is_valid, menu, result_xml_name

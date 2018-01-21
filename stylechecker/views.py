@@ -16,12 +16,12 @@ class XMLValidateView(FormView):
     def post(self, request, *args, **kwargs):
         form = UploadXMLFileForm(request.POST, request.FILES)
         if form.is_valid():
-            is_valid, summary, result_name_file = validate_xml_handler(
+            is_valid, menu, result_name_file = validate_xml_handler(
                 request.FILES['file']
             )
             context = {
                 'form': form,
-                'errors': summary if not is_valid else {}
+                'menu': menu if not is_valid else []
             }
             if not is_valid:
                 result = open(result_name_file, 'r').readlines()
