@@ -102,3 +102,6 @@ ENV/
 
 # DB file
 *.sqlite3
+
+# app files
+uploaded/
