@@ -5,10 +5,6 @@ from .forms import UploadXMLFileForm
 from .handlers import validate_xml_handler
 
 
-def home(request):
-    return render(request, "index.html", {})
-
-
 class XMLValidateView(FormView):
     form_class = UploadXMLFileForm
     template_name = 'index.html'
@@ -24,9 +20,9 @@ class XMLValidateView(FormView):
                 'menu': menu if not is_valid else []
             }
             if not is_valid:
-                result = open(result_name_file, 'r').readlines()
+                result = open(result_name_file, 'r').read()
                 context.update({
-                    'result': result
+                   'xmlfile': result
                 })
 
             return render(

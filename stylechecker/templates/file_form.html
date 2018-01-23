@@ -1,0 +1,23 @@
+<form enctype="multipart/form-data"
+      method="post"
+      action="{% url 'stylechecker:xml-validator' %}">
+    {% csrf_token %}
+    <div class="input-group">
+        <div class="custom-file">
+            <input type="file"
+                   class="custom-file-input"
+                   id="customFile"
+                   value="{{ form.file }}">
+            <label class="custom-file-label"
+                   for="customFile">
+                Selecione o arquivo XML
+            </label>
+        </div>
+        <div class="input-group-append">
+            <button type="submit"
+                    class="btn btn-secondary">
+                Validar
+            </button>
+        </div>
+    </div>
+</form>
