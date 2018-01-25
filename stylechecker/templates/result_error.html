@@ -1,23 +1,33 @@
 <div class="card">
      <div class="card-header"
-          id="line{{ forloop.counter }}">
+          id="line{{ msg_number }}{{ forloop.counter }}">
          <p class="mb-0">
-             <button class="btn btn-light collapsed"
+             <button class="btn btn-link collapsed"
                      data-toggle="collapse"
-                     data-target="#collapse_line{{ forloop.counter }}"
-                     aria-controls="collapse_line{{ forloop.counter }}">
-                 Line {{ message }}
+                     data-target="#collapse_line{{ msg_number }}{{ forloop.counter }}"
+                     aria-controls="collapse_line{{ msg_number }}{{ forloop.counter }}">
+                 Line {{ line_number }}
              </button>
          </p>
      </div>
-     <div id="collapse_line{{ forloop.counter }}"
+     <div id="collapse_line{{ msg_number }}{{ forloop.counter }}"
           class="collapse"
-          aria-labelledby="line{{ forloop.counter }}"
-          data-parent="#accordion_in">
+          aria-labelledby="line{{ msg_number }}{{ forloop.counter }}"
+          data-parent="#accordion_error_{{ msg_number }}{{ forloop.counter }}">
          <div class="card-body">
-             <pre lang="xml" class="pre-scrollable">
-                 {{ error }}
-             </pre>
+             <div class="row no-gutters">
+                 <div class="col-1">
+                     <br><br><br>
+                     <samp>
+                         L{{ line.apparent_line }}-->
+                     </samp>
+                 </div>
+                 <div class="col col-11">
+                     <pre lang="xml" class="pre-scrollable">
+                         {{ error }}
+                     </pre>
+                 </div>
+             </div>
          </div>
      </div>
 </div>

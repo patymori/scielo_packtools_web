@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 from .forms import UploadXMLFileForm
-from .handlers import validate_xml_handler
+from .models import XMLFileValidator
 
 
 class XMLValidateView(FormView):
@@ -12,19 +12,11 @@ class XMLValidateView(FormView):
     def post(self, request, *args, **kwargs):
         form = UploadXMLFileForm(request.POST, request.FILES)
         if form.is_valid():
-            is_valid, menu, result_name_file = validate_xml_handler(
-                request.FILES['file']
-            )
-            context = {
-                'form': form,
-                'menu': menu if not is_valid else []
-            }
-            if not is_valid:
-                result = open(result_name_file, 'r').read()
-                context.update({
-                   'xmlfile': result
-                })
-
+            context = {'form': form}
+            xml_file_validator = XMLFileValidator(request.FILES['file'])
+            if not xml_file_validator.validate_handler():
+                classified_errors = xml_file_validator.classify_errors()
+                context.update({'summary': classified_errors})
             return render(
                 request,
                 context=context,

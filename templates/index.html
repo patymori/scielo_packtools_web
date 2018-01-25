@@ -2,26 +2,31 @@
 {% load static %}
 
 {% block content %}
-    <div class="container">
-        <div id="header" class="row">
-            <div class="mx-auto p-5">
-                {% include 'file_form.html' %}
-            </div>
-        </div>
-        {% if form.is_valid %}
-        <div id="result" class="row pt-5">
-            <div class="col">
-                <div id="accordion">
-                {% for items in menu %}
-                      {% for message, errors in items.items %}
-                          {% include 'result_errors.html' with message=message errors=errors %}
-                      {% endfor %}
-                {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
+<div id="header" class="row">
+    <div class="mx-auto p-5">
+        {% include 'file_form.html' %}
     </div>
+</div>
+{% if form.is_valid %}
+<div class="container-fluid">
+    <div class="row">
+        <h2>Resultado</h2>
+    </div>
+    <div id="result" class="row">
+        <div class="container-fluid" id="accordion_summary">
+            {% for errors_level, errors_list in summary.items %}
+                {% for errors in errors_list %}
+                    {% for message, error_lines in errors.items %}
+                        {% with msg_number=forloop.counter %}
+                        {% include 'result_errors.html' with level=errors_level lines=error_lines %}
+                        {% endwith %}
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
 {% block js %}
     <script>
