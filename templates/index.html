@@ -8,12 +8,13 @@
     </div>
 </div>
 {% if form.is_valid %}
-<div class="container-fluid">
+<div id="result" class="container-fluid">
     <div class="row">
         <h2>Resultado</h2>
     </div>
-    <div id="result" class="row">
-        <div class="container-fluid" id="accordion_summary">
+    <div class="row pb-5">
+        <div id="accordion_summary"
+             class="container-fluid">
             {% for errors_level, errors_list in summary.items %}
                 {% for errors in errors_list %}
                     {% for message, error_lines in errors.items %}
@@ -22,6 +23,10 @@
                         {% endwith %}
                     {% endfor %}
                 {% endfor %}
+            {% empty %}
+                <div class="alert alert-success" role="alert">
+                    Documento validado sem erros
+                </div>
             {% endfor %}
         </div>
     </div>
