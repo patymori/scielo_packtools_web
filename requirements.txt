@@ -1,8 +1,11 @@
 attrs==17.4.0
 Django==2.0.1
+django-bower==5.2.0
+django-pipeline==1.6.14
 flake8==3.5.0
 lxml==4.1.1
 mccabe==0.6.1
+nodeenv==1.2.0
 packtools==2.1
 picles.plumber==0.11
 pluggy==0.6.0

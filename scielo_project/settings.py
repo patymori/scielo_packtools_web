@@ -40,9 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third part apps
+    'djangobower',
+    'pipeline',
+
     # Apps
     'stylechecker'
 ]
+
+BOWER_INSTALLED_APPS = (
+    'bootstrap',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -125,11 +134,48 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+YUGLIFY_BINARY = os.path.join(BASE_DIR, 'node_modules/yuglify/bin/yuglify')
+
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "templates", "static")
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'templates', 'static')
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+    'pipeline.finders.PipelineFinder',
+)
+
+PIPELINE = {
+    'STYLESHEETS': {
+        'styles': {
+            'source_filenames': (
+                'bootstrap/dist/css/bootstrap.min.css',
+                'css/custom.css',
+            ),
+            'output_filename': 'css/styles.css',
+        },
+    },
+    'JAVASCRIPT': {
+        'scripts': {
+            'source_filenames': (
+                'bootstrap/dist/js/bootstrap.min.js',
+                'bootstrap/assets/js/vendor/jquery-slim.min.js',
+            ),
+            'output_filename': 'js/scripts.js',
+        }
+    }
+}
+
+PIPELINE['YUGLIFY_BINARY'] = os.path.join(BASE_DIR,
+                                          'node_modules/yuglify/bin/yuglify')
+PIPELINE['CSS_COMPRESSOR'] = 'pipeline.compressors.yuglify.YuglifyCompressor'
+PIPELINE['JS_COMPRESSOR'] = 'pipeline.compressors.yuglify.YuglifyCompressor'
 
 MEDIA_ROOT = os.path.join(
     os.path.join(BASE_DIR, "uploaded")
